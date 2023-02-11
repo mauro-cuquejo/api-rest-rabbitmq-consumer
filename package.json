@@ -10,13 +10,14 @@
     "type": "git",
     "url": "git+https://github.com/mauro-cuquejo/api-rest-rabbitmq.git"
   },
-  "author": "",
+  "author": "Mauro Cuquejo",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/mauro-cuquejoapi-rest-rabbitmq/issues"
   },
   "homepage": "https://github.com/mauro-cuquejo/api-rest-rabbitmq#readme",
   "dependencies": {
+    "amqplib": "^0.10.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "morgan": "^1.10.0"
