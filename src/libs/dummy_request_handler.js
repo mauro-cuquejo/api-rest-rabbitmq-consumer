@@ -1,10 +1,13 @@
 const http = require('http');
-const https = require('https')
+const https = require('https');
+const dotenv = require('dotenv');
+dotenv.config();
 
 module.exports = {
     async obtenerDatosDummy() {
+        let urlDatosDummy = (process.env.NODE_ENV === 'production') ? process.env.URL_DATOS_DUMMY : 'localhost';
         let options = {
-            host: 'localhost',//'172.17.0.1',
+            host: urlDatosDummy,
             port: 5000,
             path: '/'
         };
@@ -19,7 +22,7 @@ module.exports = {
                     resolve(jsonData);
                 });
             }).on('error', (error) => {
-                reject(new Error('Error procesando datos Dummy'));
+                reject(new Error('Error procesando datos Dummy' + error + "\n process.env.NODE_ENV: " + process.env.NODE_ENV + ""));
             });
         });
     }

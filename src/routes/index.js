@@ -1,9 +1,10 @@
 const dotenv = require('dotenv');
 const { Router } = require('express');
 const { obtenerDatosDummy } = require('../libs/dummy_request_handler');
-const queue_handler = require('../libs/queue_handler');
-const encolarJSON = queue_handler.encolarJSON;
-const desencolarJSON = queue_handler.desencolarJSON;
+const suscriber = require('../libs/suscriber');
+const publisher = require('../libs/suscriber');
+const encolarJSON = suscriber.encolarJSON;
+const desencolarJSON = publisher.desencolarJSON;
 const router = Router();
 
 dotenv.config();
@@ -17,7 +18,7 @@ router.get('/', (_req, _res) => {
  * Igualmente acá deberia organizar mejor mis funciones para que no quede todo apilado. Este deberia ser el producer (sender)
  * y deberia tener otro proyecto con el consumer (receiver).
  */
-router.get('/obtenerDatosDummy', async (_req, _res) => {
+router.get('/obtener-dummy-modificado', async (_req, _res) => {
     try {
         const datosDummy = await obtenerDatosDummy();
         return _res.json({ datosDummy });
@@ -26,17 +27,19 @@ router.get('/obtenerDatosDummy', async (_req, _res) => {
     }
 });
 
-router.get('/encolarDatosDummy', async (_req, _res) => {
+router.post('/encolar-dummy', async (_req, _res) => {
+    console.log(_req.body);
+    const { id_nuevo } = _req.body;
     const datosDummy = await obtenerDatosDummy();
-    encolarJSON(process.env.QUEUE_NAME, JSON.stringify(datosDummy))
-        .then(_res.status(200).send("Operación realizada de forma exitosa. Se enviaron los datos: " + JSON.stringify(datosDummy)))
-        .catch(error => _res.status(500).send(error));
+    datosDummy.id_nuevo = id_nuevo;
+    encolarJSON(process.env.QUEUE_NAME, JSON.stringify(datosDummy));
+    return _res.json(datosDummy);
 });
 
-router.get('/desencolarDatosDummy', async (_req, _res) => {
+router.get('/desencolar-dummy', async (_req, _res) => {
     desencolarJSON(process.env.QUEUE_NAME)
-        .then(result => _res.json(result))
-        .catch(error => _res.status(500).send(error));
+    return _res.sendStatus(200);
+
 });
 
 module.exports = router;
