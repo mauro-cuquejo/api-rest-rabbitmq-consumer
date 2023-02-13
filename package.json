@@ -4,7 +4,8 @@
   "description": "Api que utilizará una imagen de docker de rabbitmq para encolar response modificada de dummy-api-rest",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "dev": "nodemon src",
+    "start": "node src"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
     "amqplib": "^0.10.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.20"
   }
 }
